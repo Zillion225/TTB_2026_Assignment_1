@@ -1,0 +1,2 @@
+url: https://github.com/Zillion225/TTB_2026_Assignment_Herokuapp_And_API
+test suite: automate_api.spec.js
