@@ -1,34 +1,77 @@
-def transform_alphabet_to_number(input: str):
-    char_list = list(input.upper()) # make sure input is upper case.
-    # transform list of character to list of ascii code.
-    number_list = [ord(char) for char in char_list]
-    return number_list
+"""
+This script provides a simple Caesar cipher decryption function.
+"""
+from typing import List
 
-def transform_number_to_string(input_list: list):
-    char_list = [chr(num_code) for num_code in input_list]
-    return ''.join(char_list)
+def transform_alphabet_to_number(input_str: str) -> List[int]:
+    """Converts a string of alphabetic characters to a list of ASCII codes.
 
-def shift_logic(ascii_code: int, shift_position: int):
-    shift_position = shift_position % 26 # use mod to handle case shift_position > 26
-    res = ascii_code - shift_position
-    # if shifted value goes beyond 'A'
-    if res < 65:
-        res += 26
-    # if shifted value goes beyond 'Z'
-    if res > 90:
-        res -= 26
-    return  res
+    Args:
+        input_str: The input string.
 
-def simpleCipher(encrypted: str, k: int):
+    Returns:
+        A list of ASCII codes.
+    """
+    return [ord(char) for char in input_str.upper()]
+
+def transform_number_to_string(input_list: List[int]) -> str:
+    """Converts a list of ASCII codes to a string.
+
+    Args:
+        input_list: The list of ASCII codes.
+
+    Returns:
+        The resulting string.
+    """
+    return "".join([chr(num_code) for num_code in input_list])
+
+def shift_logic(ascii_code: int, shift_position: int) -> int:
+    """Shifts an ASCII code by a given position, wrapping around the alphabet.
+
+    Args:
+        ascii_code: The ASCII code to shift.
+        shift_position: The number of positions to shift.
+
+    Returns:
+        The shifted ASCII code.
+    """
+    # Handle cases where shift_position > 26
+    shift_position %= 26  
+    result = ascii_code - shift_position
+    
+    alphabet_start = ord('A')
+    alphabet_end = ord('Z')
+
+    if result < alphabet_start:
+        result += 26
+    elif result > alphabet_end:
+        result -= 26
+        
+    return result
+
+def simpleCipher(encrypted: str, k: int) -> str:
+    """Decrypts a string using a simple Caesar cipher.
+
+    Args:
+        encrypted: The encrypted string.
+        k: The shift key.
+
+    Returns:
+        The decrypted string.
+    """
     ascii_list = transform_alphabet_to_number(encrypted)
-    shift_list = [shift_logic(code, k) for code in ascii_list]
-    return transform_number_to_string(shift_list)
+    shifted_list = [shift_logic(code, k) for code in ascii_list]
+    return transform_number_to_string(shifted_list)
 
 def main():
-    encrpyted_text = 'VTAOG'
+    """
+    Main function to demonstrate the simple cipher decryption.
+    """
+    encrypted_text = 'VTAOG'
     k = 2
-    decrypted_text = simpleCipher(encrpyted_text, k)
-    print(decrypted_text)
+    decrypted_text = simpleCipher(encrypted_text, k)
+    print(f"Encrypted: {encrypted_text}")
+    print(f"Decrypted: {decrypted_text}")
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
